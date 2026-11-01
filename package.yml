@@ -1,0 +1,18 @@
+package: community.lazycat.app.artalk
+version: 2.10.1
+name: Artalk
+description: "Self-hosted comment system for blogs with moderation and notifications."
+min_os_version: "1.5.0"
+homepage: https://github.com/ArtalkJS/Artalk
+author: ArtalkJS
+license: MIT
+permissions:
+  required:
+    - net.internet
+locales:
+  zh:
+    name: Artalk
+    description: "自托管评论系统：博客评论区、审核后台、邮件通知与多站点管理。"
+  en:
+    name: Artalk
+    description: "Self-hosted comment system for blogs with moderation and notifications."

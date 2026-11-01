@@ -1,0 +1,30 @@
+params:
+  - id: admin_user
+    type: string
+    name: Admin username
+    description: "Administrator account name. Letters, digits and _ . @ - only. Created or updated on every container start."
+    default_value: admin
+    optional: false
+  - id: admin_mail
+    type: string
+    name: Admin email
+    description: "Administrator email address, also the login identity. Created or updated on every container start."
+    default_value: admin@example.com
+    optional: false
+  - id: admin_secret
+    type: secret
+    name: Admin secret
+    description: "At least 12 characters. Applied to the administrator account at container start, so no built-in default credential exists."
+    default_value: "$random(len=20)"
+    optional: false
+locales:
+  zh:
+    admin_user:
+      name: 管理员用户名
+      description: 管理员账号名，只能用字母、数字和 _ . @ -。每次容器启动会按此创建或更新该账号。
+    admin_mail:
+      name: 管理员邮箱
+      description: 管理员邮箱，同时也是登录身份。每次容器启动会按此创建或更新该账号。
+    admin_secret:
+      name: 管理员密码
+      description: 至少 12 位。容器启动时写入管理员账号，因此本包不存在内置默认口令。

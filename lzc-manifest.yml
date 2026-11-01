@@ -1,0 +1,47 @@
+application:
+  subdomain: artalk
+  multi_instance: false
+  upstreams:
+    - location: /package-licenses/
+      backend: file:///lzcapp/pkg/content/licenses/
+    - location: /
+      backend: http://artalk:23366/
+
+services:
+  artalk:
+    # upstream: artalk/artalk-go:2.10.1
+    image: docker.1ms.run/artalk/artalk-go:2.10.1
+    environment:
+      - TZ=Asia/Shanghai
+      - ATK_LOCALE=zh-CN
+      - |-
+        ATK_SITE_DEFAULT={{ .S.AppDomain }}
+      - |-
+        ATK_SITE_URL=https://{{ .S.AppDomain }}
+      - |-
+        ARTALK_ADMIN_USER={{ .U.admin_user | replace "\r" "" | replace "\n" "" }}
+      - |-
+        ARTALK_ADMIN_MAIL={{ .U.admin_mail | replace "\r" "" | replace "\n" "" }}
+      - |-
+        ARTALK_ADMIN_PASS={{ .U.admin_secret | replace "\r" "" | replace "\n" "" }}
+    command: sh /lzcapp/pkg/content/start.sh
+    binds:
+      - /lzcapp/var/data:/data
+
+usage: |
+  Artalk 是自托管评论系统：给博客或静态站点嵌入评论区，带审核后台、邮件通知和多站点管理。
+
+  使用方法：
+  1. 打开应用，用部署参数里的管理员账号登录（后台入口在 /admin/）。
+  2. 进后台建一个「站点」，填写你的博客域名。
+  3. 把那行前端脚本贴到博客模板里，评论区就会显示。
+
+  数据与安全：
+  - 评论数据和管理员账号都保存在 /lzcapp/var/data 下的 SQLite 数据库里，卸载应用会一并删除，请定期备份。
+  - 管理员账号由部署参数决定，容器每次启动会按参数创建或更新该账号，因此本包不包含任何内置默认口令。
+  - 修改部署参数里的管理员密码后重新部署即可生效。
+  - 应用经懒猫入口鉴权访问。
+
+  说明：
+  - 评论前端脚本需要访客能从公网访问本应用地址，否则你的站点上评论区加载不出来。
+  - 未做真机验证：管理员登录、建站、评论提交与审核、邮件通知、以及重启后持久化均未在设备上实测。
